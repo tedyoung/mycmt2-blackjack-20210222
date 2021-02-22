@@ -35,8 +35,9 @@ public class Hand {
     return handValue;
   }
 
-  String displayFirstCard() {
-    return ConsoleCard.display(cards.get(0));
+  // read-only snapshot in time of current state of cards
+  public List<Card> cards() {
+    return List.copyOf(cards);
   }
 
   void display() {

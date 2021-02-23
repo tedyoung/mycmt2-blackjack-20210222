@@ -24,6 +24,9 @@ public class Game {
   }
 
   public String determineOutcome() {
+    if (!playerDone) {
+      throw new IllegalStateException();
+    }
     if (playerHand.isBusted()) {
       return "You Busted, so you lose.  💸";
     }

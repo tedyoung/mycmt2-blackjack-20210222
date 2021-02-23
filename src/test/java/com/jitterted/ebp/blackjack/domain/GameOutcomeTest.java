@@ -17,7 +17,7 @@ class GameOutcomeTest {
     game.dealerTurn();
 
     assertThat(game.determineOutcome())
-        .isEqualTo("You beat the Dealer! \uD83D\uDCB5");
+        .isEqualByComparingTo(GameOutcome.PLAYER_BEATS_DEALER);
   }
 
   @Test
@@ -32,7 +32,7 @@ class GameOutcomeTest {
     game.dealerTurn();
 
     assertThat(game.determineOutcome())
-        .isEqualTo("You Busted, so you lose.  💸");
+        .isEqualByComparingTo(GameOutcome.PLAYER_BUSTED);
   }
 
 }

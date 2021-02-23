@@ -1,6 +1,11 @@
 package com.jitterted.ebp.blackjack.adapter.in.console;
 
 import com.jitterted.ebp.blackjack.domain.Game;
+import org.fusesource.jansi.Ansi;
+
+import java.util.Scanner;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 public class ConsoleGame {
 
@@ -10,9 +15,23 @@ public class ConsoleGame {
     this.game = game;
   }
 
+  private void resetScreen() {
+    System.out.println(ansi().reset());
+  }
+
+  private void displayWelcomeScreen() {
+    System.out.println(ansi()
+                           .bgBright(Ansi.Color.WHITE)
+                           .eraseScreen()
+                           .cursor(1, 1)
+                           .fgGreen().a("Welcome to")
+                           .fgRed().a(" Jitterted's")
+                           .fgBlack().a(" BlackJack"));
+  }
+
   // CONTROLLER method
   public void start() {
-    Game.displayWelcomeScreen();
+    displayWelcomeScreen();
 
     game.initialDeal();
 
@@ -24,16 +43,22 @@ public class ConsoleGame {
 
     game.determineOutcome();
 
-    Game.resetScreen();
+    resetScreen();
   }
 
   // Player Game Loop
   public void playerPlays() {
     while (!game.isPlayerDone()) {
       game.displayGameState();
-      String command = game.inputFromPlayer();
+      String command = inputFromPlayer();
       handle(command);
     }
+  }
+
+  public String inputFromPlayer() {
+    System.out.println("[H]it or [S]tand?");
+    Scanner scanner = new Scanner(System.in);
+    return scanner.nextLine();
   }
 
   // DISPATCHER

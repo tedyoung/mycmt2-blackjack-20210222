@@ -1,9 +1,6 @@
 package com.jitterted.ebp.blackjack.domain;
 
 import com.jitterted.ebp.blackjack.adapter.in.console.ConsoleHand;
-import org.fusesource.jansi.Ansi;
-
-import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -15,32 +12,6 @@ public class Game {
   private final Hand playerHand = new Hand();
   private boolean playerDone;
 
-  public static void main(String[] args) {
-    displayWelcomeScreen();
-    playGame();
-    resetScreen();
-  }
-
-  public static void resetScreen() {
-    System.out.println(ansi().reset());
-  }
-
-  private static void playGame() {
-    Game game = new Game();
-    game.initialDeal();
-    game.play();
-  }
-
-  public static void displayWelcomeScreen() {
-    System.out.println(ansi()
-                           .bgBright(Ansi.Color.WHITE)
-                           .eraseScreen()
-                           .cursor(1, 1)
-                           .fgGreen().a("Welcome to")
-                           .fgRed().a(" Jitterted's")
-                           .fgBlack().a(" BlackJack"));
-  }
-
   public Game() {
     deck = new Deck();
   }
@@ -48,16 +19,6 @@ public class Game {
   public void initialDeal() {
     dealRoundOfCards();
     dealRoundOfCards();
-  }
-
-  public void play() {
-    playerTurn();
-
-    dealerTurn();
-
-    displayFinalGameState();
-
-    determineOutcome();
   }
 
   private void dealRoundOfCards() {
@@ -89,31 +50,6 @@ public class Game {
     }
   }
 
-  private void playerTurn() {
-    // get Player's decision: hit until they stand, then they're done (or they go bust)
-
-    while (!playerHand.isBusted()) {
-      displayGameState();
-      String playerChoice = inputFromPlayer().toLowerCase();
-      if (playerChoice.startsWith("s")) {
-        break;
-      }
-      if (playerChoice.startsWith("h")) {
-        playerHand.drawFrom(deck);
-        if (playerHand.isBusted()) {
-          return;
-        }
-      } else {
-        System.out.println("You need to [H]it or [S]tand");
-      }
-    }
-  }
-
-  public String inputFromPlayer() {
-    System.out.println("[H]it or [S]tand?");
-    Scanner scanner = new Scanner(System.in);
-    return scanner.nextLine();
-  }
 
   public void displayGameState() {
     System.out.print(ansi().eraseScreen().cursor(1, 1));

@@ -15,6 +15,46 @@ public class ConsoleGame {
     this.game = game;
   }
 
+  private void displayGameState() {
+    System.out.print(ansi().eraseScreen().cursor(1, 1));
+    System.out.println("Dealer has: ");
+    System.out.println(ConsoleHand.displayFirstCard(game.dealerHand())); // first card is Face Up
+
+    // second card is the hole card, which is hidden
+    displayBackOfCard();
+
+    System.out.println();
+    System.out.println("Player has: ");
+    System.out.println(ConsoleHand.cardsAsString(game.playerHand()));
+    System.out.println(" (" + game.playerHand().displayValue() + ")");
+  }
+
+  private static void displayBackOfCard() {
+    System.out.print(
+        ansi()
+            .cursorUp(7)
+            .cursorRight(12)
+            .a("┌─────────┐").cursorDown(1).cursorLeft(11)
+            .a("│░░░░░░░░░│").cursorDown(1).cursorLeft(11)
+            .a("│░ J I T ░│").cursorDown(1).cursorLeft(11)
+            .a("│░ T E R ░│").cursorDown(1).cursorLeft(11)
+            .a("│░ T E D ░│").cursorDown(1).cursorLeft(11)
+            .a("│░░░░░░░░░│").cursorDown(1).cursorLeft(11)
+            .a("└─────────┘"));
+  }
+
+  private void displayFinalGameState() {
+    System.out.print(ansi().eraseScreen().cursor(1, 1));
+    System.out.println("Dealer has: ");
+    System.out.println(ConsoleHand.cardsAsString(game.dealerHand()));
+    System.out.println(" (" + game.dealerHand().displayValue() + ")");
+
+    System.out.println();
+    System.out.println("Player has: ");
+    System.out.println(ConsoleHand.cardsAsString(game.playerHand()));
+    System.out.println(" (" + game.playerHand().displayValue() + ")");
+  }
+
   private void resetScreen() {
     System.out.println(ansi().reset());
   }
@@ -39,9 +79,9 @@ public class ConsoleGame {
 
     game.dealerTurn();
 
-    game.displayFinalGameState();
+    displayFinalGameState();
 
-    game.determineOutcome();
+    System.out.println(game.determineOutcome());
 
     resetScreen();
   }
@@ -49,7 +89,7 @@ public class ConsoleGame {
   // Player Game Loop
   public void playerPlays() {
     while (!game.isPlayerDone()) {
-      game.displayGameState();
+      displayGameState();
       String command = inputFromPlayer();
       handle(command);
     }

@@ -1,9 +1,5 @@
 package com.jitterted.ebp.blackjack.domain;
 
-import com.jitterted.ebp.blackjack.adapter.in.console.ConsoleHand;
-
-import static org.fusesource.jansi.Ansi.ansi;
-
 public class Game {
 
   private final Deck deck;
@@ -27,18 +23,21 @@ public class Game {
     dealerHand.drawFrom(deck);
   }
 
-  public void determineOutcome() {
+  public String determineOutcome() {
     if (playerHand.isBusted()) {
-      System.out.println("You Busted, so you lose.  💸");
-    } else if (dealerHand.isBusted()) {
-      System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
-    } else if (playerHand.beats(dealerHand)) {
-      System.out.println("You beat the Dealer! 💵");
-    } else if (playerHand.pushes(dealerHand)) {
-      System.out.println("Push: The house wins, you Lose. 💸");
-    } else {
-      System.out.println("You lost to the Dealer. 💸");
+      return "You Busted, so you lose.  💸";
     }
+    if (dealerHand.isBusted()) {
+      return "Dealer went BUST, Player wins! Yay for you!! 💵";
+    }
+    if (playerHand.beats(dealerHand)) {
+      return "You beat the Dealer! 💵";
+    }
+    if (playerHand.pushes(dealerHand)) {
+      return "Push: The house wins, you Lose. 💸";
+    }
+
+    return "You lost to the Dealer. 💸";
   }
 
   public void dealerTurn() {
@@ -50,45 +49,13 @@ public class Game {
     }
   }
 
-
-  public void displayGameState() {
-    System.out.print(ansi().eraseScreen().cursor(1, 1));
-    System.out.println("Dealer has: ");
-    System.out.println(ConsoleHand.displayFirstCard(dealerHand)); // first card is Face Up
-
-    // second card is the hole card, which is hidden
-    displayBackOfCard();
-
-    System.out.println();
-    System.out.println("Player has: ");
-    System.out.println(ConsoleHand.cardsAsString(playerHand));
-    System.out.println(" (" + playerHand.displayValue() + ")");
+  // Really we'd like to return a ReadOnlyHand
+  public Hand dealerHand() {
+    return dealerHand;
   }
 
-  public void displayFinalGameState() {
-    System.out.print(ansi().eraseScreen().cursor(1, 1));
-    System.out.println("Dealer has: ");
-    System.out.println(ConsoleHand.cardsAsString(dealerHand));
-    System.out.println(" (" + dealerHand.displayValue() + ")");
-
-    System.out.println();
-    System.out.println("Player has: ");
-    System.out.println(ConsoleHand.cardsAsString(playerHand));
-    System.out.println(" (" + playerHand.displayValue() + ")");
-  }
-
-  private void displayBackOfCard() {
-    System.out.print(
-        ansi()
-            .cursorUp(7)
-            .cursorRight(12)
-            .a("┌─────────┐").cursorDown(1).cursorLeft(11)
-            .a("│░░░░░░░░░│").cursorDown(1).cursorLeft(11)
-            .a("│░ J I T ░│").cursorDown(1).cursorLeft(11)
-            .a("│░ T E R ░│").cursorDown(1).cursorLeft(11)
-            .a("│░ T E D ░│").cursorDown(1).cursorLeft(11)
-            .a("│░░░░░░░░░│").cursorDown(1).cursorLeft(11)
-            .a("└─────────┘"));
+  public Hand playerHand() {
+    return playerHand;
   }
 
   public void playerHits() {

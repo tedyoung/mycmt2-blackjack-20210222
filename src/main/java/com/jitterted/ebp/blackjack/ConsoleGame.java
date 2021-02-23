@@ -1,5 +1,7 @@
 package com.jitterted.ebp.blackjack;
 
+import com.jitterted.ebp.blackjack.domain.Game;
+
 public class ConsoleGame {
 
   private final Game game;

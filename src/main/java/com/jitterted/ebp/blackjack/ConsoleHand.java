@@ -1,5 +1,7 @@
 package com.jitterted.ebp.blackjack;
 
+import com.jitterted.ebp.blackjack.domain.Hand;
+
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.ansi;

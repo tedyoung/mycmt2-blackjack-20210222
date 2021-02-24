@@ -34,4 +34,11 @@ public class WebTest {
     mockMvc.perform(get("/game"))
            .andExpect(status().isOk());
   }
+
+  @Test
+  public void postToHitEndpointRedirectsToGameView() throws Exception {
+    mockMvc.perform(post("/hit"))
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/game"));
+  }
 }

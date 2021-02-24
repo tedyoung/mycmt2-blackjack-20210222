@@ -48,4 +48,12 @@ public class WebTest {
            .andExpect(status().isOk());
   }
 
+  @Test
+  public void postToStandEndpointRedirectsToDone() throws Exception {
+    mockMvc.perform(post("/stand"))
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/done"));
+
+  }
+
 }

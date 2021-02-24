@@ -68,10 +68,14 @@ public class Game {
   public void playerHits() {
     playerHand.drawFrom(deck);
     playerDone = playerHand.isBusted();
+    if (playerDone) {
+      dealerTurn();
+    }
   }
 
   public void playerStands() {
     playerDone = true;
+    dealerTurn();
   }
 
   public boolean isPlayerDone() {

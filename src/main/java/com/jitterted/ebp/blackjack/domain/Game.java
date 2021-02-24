@@ -28,9 +28,9 @@ public class Game {
   }
 
   public GameOutcome determineOutcome() {
-    if (!playerDone) {
-      throw new IllegalStateException();
-    }
+//    if (!playerDone) {
+//      throw new IllegalStateException();
+//    }
     if (playerHand.isBusted()) {
       return GameOutcome.PLAYER_BUSTED;
     }

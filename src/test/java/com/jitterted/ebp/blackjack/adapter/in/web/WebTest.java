@@ -23,9 +23,15 @@ public class WebTest {
   }
 
   @Test
-  public void postToStartGameEndpointIs200Ok() throws Exception {
+  public void postToStartGameEndpointRedirectsToGameEndpoint() throws Exception {
     mockMvc.perform(post("/start-game"))
            .andExpect(status().is3xxRedirection())
            .andExpect(redirectedUrl("/game"));
+  }
+
+  @Test
+  public void getOfGameEndpointIs200Ok() throws Exception {
+    mockMvc.perform(get("/game"))
+           .andExpect(status().isOk());
   }
 }
